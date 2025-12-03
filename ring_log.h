@@ -17,7 +17,7 @@
 
 
 #define RING_BUFFER_SIZE 10000  // 环形缓冲区的大小
-#define LOG_MAX_LEN 128       // 日志条目大小
+#define LOG_MAX_LEN 256       // 日志条目大小
 #define BATCH_SIZE        10240      // 子线程每次批量处理日志的条数
 #define FLUSH_INTERVAL_MS 4000 // 定时刷新间隔（单位：微秒，这里设置为2s）
 #define MEGATRACE_LOG_ENABLE           1

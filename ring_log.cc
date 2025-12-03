@@ -1,9 +1,11 @@
 //#include "nccl.h"
 #define MEGA_CC
+
 #include "ring_log.h"
 #include "log.h"
 //#include "core.h"
 #include <sys/un.h>
+#include <utime.h>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -13,6 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <sys/stat.h>
 
 #include <chrono>
 
@@ -96,17 +99,12 @@ int ring_buffer_pop_batch(ring_buffer_t *rb, log_entry_t *out_entries, int max_e
 }
 
 
+
  /*
  * 日志写入线程：负责将环形缓冲区中的日志写入到文件中。
  * 刷新策略：  * 1. 如果缓冲区中日志数量达到 BATCH_SIZE，则立即写入。
  * 2. 如果日志数量不足，但距离上次刷新超过 FLUSH_INTERVAL_US，则写入所有已有日志。  */
 void *log_writer_thread(void *arg) {
-    // const char *rank_str = getenv("OMPI_COMM_WORLD_RANK");
-    // if (rank_str == NULL) {
-    //     LOG_ERROR_SIMPLE("Environment variable 'OMPI_COMM_RANK' not found.");
-    //     return NULL;
-    // }
-    // int rank = atoi(rank_str); // 将 rank 从字符串转换为整数
     // // 定义文件路径
     // char filename[256];
     // snprintf(filename, sizeof(filename), "%s/rank_%d.log", nccl_megatrace_log_path, rank);
@@ -117,16 +115,21 @@ void *log_writer_thread(void *arg) {
         node_ip = "unknown";
     }
 
-    // 获取rank号，支持torchrun的RANK和MPI的OMPI_COMM_WORLD_RANK
-    const char *rank_str = getenv("OMPI_COMM_WORLD_RANK");
-    if (rank_str == NULL) {
-        rank_str = getenv("RANK");
+    const char* train_job_id = getenv("TRAIN_JOB_ID");
+    if (train_job_id == NULL) {
+        train_job_id = "unknown";
     }
-    if (rank_str == NULL) {
-        LOG_ERROR_SIMPLE("Environment variable 'OMPI_COMM_WORLD_RANK' or 'RANK' not found.");
-        return NULL;
+
+    const char* running_round_str = getenv("RUNNING_ROUND");
+    if (running_round_str == NULL) {
+        running_round_str = "0";
     }
-    int rank = atoi(rank_str); // 将 rank 从字符串转换为整数
+    int running_round = atoi(running_round_str);
+
+    int pid = getpid();
+
+    const char *rank_str = get_rank_str();
+    int rank = (rank_str != NULL) ? atoi(rank_str) : 0;
 
     // 获取当前时间
     time_t rawtime;
@@ -136,9 +139,8 @@ void *log_writer_thread(void *arg) {
     timeinfo = localtime(&rawtime);
     strftime(time_buffer, sizeof(time_buffer), "%Y%m%d_%H%M%S", timeinfo);
 
-    // 定义文件路径，使用IP地址和时间戳作为文件名头部
     char filename[256];
-    snprintf(filename, sizeof(filename), "%s/%s_%s_rank_%d.log", nccl_megatrace_log_path, node_ip, time_buffer, rank);
+    snprintf(filename, sizeof(filename), "%s/megatrace_%s_%d.log", nccl_megatrace_log_path, time_buffer, pid);
 
     // 打开文件
     FILE *fp = fopen(filename, "w");
@@ -146,8 +148,13 @@ void *log_writer_thread(void *arg) {
         LOG_ERROR_SIMPLE("open file error, file path may not exist. errno=%d msg=%s", errno, strerror(errno));
         return NULL;
     }
+    int fd = fileno(fp);
+    if (fd < 0) {
+        LOG_ERROR_SIMPLE("get file descriptor error. errno=%d msg=%s", errno, strerror(errno));
+        return NULL;
+    }
     if(rank == 0){ 
-	 LOG_INFO_SIMPLE("[Megatrace] start log thread.");
+	    LOG_INFO_SIMPLE("[Megatrace] start log thread.");
     }
     log_entry_t logs[BATCH_SIZE];
     int save_iter=0;
@@ -158,59 +165,83 @@ void *log_writer_thread(void *arg) {
         int num_logs = ring_buffer_count(&ring_nccl_log);   
 	    if (time_diff < nccl_sensitive_time || num_logs == 0) {       
             LOG_DEBUG("time_diff: %ld  num_logs: %d",time_diff,num_logs);
-            sleep(1);  
         } else {            
-                 save_iter++;
-                 LOG_INFO("[save %d] save %d logs",save_iter,num_logs);
-                 int n_logs = ring_buffer_pop_batch(&ring_nccl_log, logs, num_logs);
-                 for (int i = 0; i < n_logs; i++) {
-                    fprintf(fp, "[save_count %d] %s\n", save_iter,logs[i].msg);
-                 }
-                 fflush(fp);
-                 sleep(1); 
+            long current_pos = ftell(fp);
+            if(current_pos >= 0 && current_pos >= LOG_ROTATE_SIZE) {
+                // 关闭当前文件
+                fclose(fp);
+                
+                // 直接删除旧文件
+                if (remove(filename) != 0) {
+                    LOG_ERROR_SIMPLE("failed to remove old log file: %s. errno=%d msg=%s", 
+                                     filename, errno, strerror(errno));
+                }
+                
+                // 创建新的同名文件
+                fp = fopen(filename, "w");
+                if (!fp) {
+                    LOG_ERROR_SIMPLE("failed to create new log file after rotation. errno=%d msg=%s", 
+                                     errno, strerror(errno));
+                    return NULL;
+                }
+                
+                // 更新文件描述符
+                fd = fileno(fp);
+                if (fd < 0) {
+                    LOG_ERROR_SIMPLE("get file descriptor error after rotation. errno=%d msg=%s", 
+                                     errno, strerror(errno));
+                    fclose(fp);
+                    return NULL;
+                }
+                
+                if (rank == 0) {
+                    LOG_INFO_SIMPLE("[Megatrace] log file rotated (old file deleted): %s", filename);
+                }
+            }
+            save_iter++;
+            LOG_INFO("[save %d] save %d logs",save_iter,num_logs);
+            int n_logs = ring_buffer_pop_batch(&ring_nccl_log, logs, num_logs);
+            for (int i = 0; i < n_logs; i++) {
+                fprintf(fp, "[%s] [%d] [%s] [save_count %d] %s\n", train_job_id, running_round, node_ip, save_iter, logs[i].msg);
+            }
+            fflush(fp);
         }
+        if (save_iter % 300 == 0) {
+            if (futimens(fd, NULL) == -1) {
+                LOG_ERROR_SIMPLE("futimens failed =%d msg=%s", errno, strerror(errno));
+            }
+        }
+        sleep(1); 
     }
     fclose(fp);
     return NULL;
 }
 
-    void log_event(struct timespec time_api, size_t count, const char* opName, cudaStream_t stream,int64_t opCount,uint64_t groupHash) {
-        //log_event(time_api, info->count, info->opName, info->stream, info->comm->opCount,info->count,info->comm,);
-        // 用于格式化日志信息
-        char log_msg[LOG_MAX_LEN];
-        char time_str[64];
-        snprintf(time_str, sizeof(time_str), "%ld.%09ld", time_api.tv_sec, time_api.tv_nsec);
-        // const char *rank_str = getenv("OMPI_COMM_WORLD_RANK");
-        // int rank = atoi(rank_str);
-        // 获取rank号，支持torchrun的RANK和MPI的OMPI_COMM_WORLD_RANK
-        const char *rank_str = getenv("OMPI_COMM_WORLD_RANK");
-        if (rank_str == NULL) {
-            rank_str = getenv("RANK");
-        }
-        int rank = (rank_str != NULL) ? atoi(rank_str) : 0;
-        // 格式化日志内容
-        snprintf(log_msg, sizeof(log_msg), "[%s] [Rank %d] Fun %s Data %zu stream %p opCount %lld groupHash 0x%016llx",
-                time_str, rank, opName, count, (void*)stream, (long long)opCount, (unsigned long long)groupHash);
-        //int num = ring_buffer_count(&ring_nccl_log);
-        ring_buffer_push(&ring_nccl_log, log_msg);
+const char* get_rank_str()
+{
+    // 获取rank号，支持torchrun的RANK和MPI的OMPI_COMM_WORLD_RANK
+    const char *rank_str = getenv("OMPI_COMM_WORLD_RANK");
+    if (rank_str == NULL) {
+        rank_str = getenv("RANK");
     }
-    // void log_event(struct timespec time_api, size_t count, const char* opName, cudaStream_t stream,int64_t opCount,int64_t groupHash) {
-    //     //log_event(time_api, info->count, info->opName, info->stream, info->comm->opCount,info->count,info->comm,);
-    //     // 用于格式化日志信息
-    //     char log_msg[LOG_MAX_LEN];
-    //     char time_str[64];
-    //     snprintf(time_str, sizeof(time_str), "%ld.%09ld", time_api.tv_sec, time_api.tv_nsec);
-    //     // const char *rank_str = getenv("OMPI_COMM_WORLD_RANK");
-    //     // int rank = atoi(rank_str);
-    //     // 获取rank号，支持torchrun的RANK和MPI的OMPI_COMM_WORLD_RANK
-    //     const char *rank_str = getenv("OMPI_COMM_WORLD_RANK");
-    //     if (rank_str == NULL) {
-    //         rank_str = getenv("RANK");
-    //     }
-    //     int rank = (rank_str != NULL) ? atoi(rank_str) : 0;
-    //     // 格式化日志内容
-    //     snprintf(log_msg, sizeof(log_msg), "[%s] [Rank %d] Fun %s Data %zu stream %p opCount %ld groupHash %ld",
-    //              time_str,rank ,opName, count, (void*)stream,opCount,groupHash);
-    //     //int num = ring_buffer_count(&ring_nccl_log);
-    //     ring_buffer_push(&ring_nccl_log, log_msg);
-    // }
+    if (rank_str == NULL) {
+        LOG_ERROR_SIMPLE("Environment variable 'OMPI_COMM_WORLD_RANK' or 'RANK' not found.");
+        return NULL;
+    }
+    return rank_str;
+}
+
+void log_event(struct timespec time_api, size_t count, const char* opName, cudaStream_t stream,int64_t opCount,uint64_t groupHash) {
+    //log_event(time_api, info->count, info->opName, info->stream, info->comm->opCount,info->count,info->comm,);
+    // 用于格式化日志信息
+    char log_msg[LOG_MAX_LEN];
+    char time_str[64];
+    snprintf(time_str, sizeof(time_str), "%ld.%09ld", time_api.tv_sec, time_api.tv_nsec);
+    const char *rank_str = get_rank_str();
+    int rank = (rank_str != NULL) ? atoi(rank_str) : 0;
+    // 格式化日志内容
+    snprintf(log_msg, sizeof(log_msg), "[%s] [Rank %d] [Fun %s] [Data %zu] [stream %p] [opCount %lld] [groupHash 0x%016llx]",
+            time_str, rank, opName, count, (void*)stream, (long long)opCount, (unsigned long long)groupHash);
+    //int num = ring_buffer_count(&ring_nccl_log);
+    ring_buffer_push(&ring_nccl_log, log_msg);
+}
