@@ -1,0 +1,112 @@
+=== NCCL/CUDA Intercept Log Started ===
+Rank: 0
+Start Time: 1768116061.235080713
+Log File: ./mega_log/rank_0.log
+=======================================
+1768116061.230482949,NCCL_API,AllGather,count=1,datatype=4,stream=a1a3e30,comm=a708db0,group_hash=0xdea94835044d01f1
+1768116061.236961967,NCCL_API,Broadcast,count=6,datatype=4,stream=a1a3e30,comm=a708db0,group_hash=0xdea94835044d01f1
+1768116061.240810773,CUDA_KERNEL,func=7f01c0c48670,grid=(1,2,1),block=(128,1,1),stream=0,is_nccl=0
+1768116065.985091809,NCCL_API,Broadcast,count=22,datatype=7,stream=a1a3e30,comm=a708db0,group_hash=0xdea94835044d01f1
+1768116066.731912512,CUDA_KERNEL,func=7f01bf5b96a0,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768116066.744185602,CUDA_KERNEL,func=7f01bfa6f320,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768116066.744516926,CUDA_KERNEL,func=7f01bfa6fd20,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768116066.750546908,CUDA_KERNEL,func=7f01bf987de0,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768116066.750837459,CUDA_KERNEL,func=7f01bfa6f320,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768116066.759454818,CUDA_KERNEL,func=7f01bf77b4e0,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768116066.762751380,CUDA_KERNEL,func=7f01c072ac10,grid=(1,1,1),block=(256,1,1),stream=0,is_nccl=0
+1768116066.763120791,CUDA_KERNEL,func=7f01c072e530,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768116066.763444184,CUDA_KERNEL,func=7f01c072e160,grid=(1,1,1),block=(384,1,1),stream=0,is_nccl=0
+1768116066.774914599,CUDA_KERNEL,func=7f01c01b9760,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768116066.775250270,CUDA_KERNEL,func=7f01bf5b96a0,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768116066.783587128,CUDA_KERNEL,func=7f01bfb413b0,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768116066.790793937,CUDA_KERNEL,func=7f01c0a067d0,grid=(1,1,1),block=(4,1,1),stream=0,is_nccl=0
+1768116066.797992617,CUDA_KERNEL,func=7f01c09ee300,grid=(1,1,1),block=(4,1,1),stream=0,is_nccl=0
+1768116066.805710322,CUDA_KERNEL,func=7f01c10d2530,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768116066.806058515,CUDA_KERNEL,func=7f01bfa6fd20,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768116066.813048510,CUDA_KERNEL,func=7f01bf8002d0,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768116066.818619230,CUDA_KERNEL,func=7f01bfac3210,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768116066.818931844,CUDA_KERNEL,func=7f01bfac3210,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768116066.819188414,CUDA_KERNEL,func=7f01bfac3210,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768116066.819920531,NCCL_API,AllReduce,count=1,datatype=7,stream=0,comm=a708db0,group_hash=0xdea94835044d01f1
+1768116066.890248185,NCCL_API,AllReduce,count=1,datatype=7,stream=0,comm=a708db0,group_hash=0xdea94835044d01f1
+1768116066.891317563,NCCL_API,AllReduce,count=1,datatype=7,stream=0,comm=a708db0,group_hash=0xdea94835044d01f1
+=== NCCL/CUDA Intercept Log Ended ===
+End Time: 1768116072.700513390
+=====================================
+=== NCCL/CUDA Intercept Log Started ===
+Rank: 0
+Start Time: 1768116438.658853779
+Log File: ./mega_log/rank_0.log
+=======================================
+1768116438.658462199,NCCL_API,AllGather,count=1,datatype=4,stream=912a7f0,comm=9690110,group_hash=0x6dd5df7ac533a11
+1768116438.661844916,NCCL_API,Broadcast,count=6,datatype=4,stream=912a7f0,comm=9690110,group_hash=0x6dd5df7ac533a11
+=== NCCL/CUDA Intercept Log Started ===
+Rank: 0
+Start Time: 1768116756.188094902
+Log File: ./mega_log/rank_0.log
+=======================================
+1768116756.187196457,NCCL_API,AllGather,count=1,datatype=4,stream=9497be0,comm=99fd010,group_hash=0x7ad1e65ff7a16352
+1768116756.191023689,NCCL_API,Broadcast,count=6,datatype=4,stream=9497be0,comm=99fd010,group_hash=0x7ad1e65ff7a16352
+=== NCCL/CUDA Intercept Log Started ===
+Rank: 0
+Start Time: 1768116925.820270636
+Log File: ./mega_log/rank_0.log
+=======================================
+1768116925.819813203,NCCL_API,AllGather,count=1,datatype=4,stream=8844050,comm=8daa140,group_hash=0x8b0a8df087cad03a
+1768116925.825270307,NCCL_API,Broadcast,count=6,datatype=4,stream=8844050,comm=8daa140,group_hash=0x8b0a8df087cad03a
+=== NCCL/CUDA Intercept Log Started ===
+Rank: 0
+Start Time: 1768117047.941189562
+Log File: ./mega_log/rank_0.log
+=======================================
+1768117047.940924144,NCCL_API,AllGather,count=1,datatype=4,stream=9970410,comm=9ed4cb0,group_hash=0xe8643206e56e69d6
+1768117047.956645085,NCCL_API,Broadcast,count=6,datatype=4,stream=9970410,comm=9ed4cb0,group_hash=0xe8643206e56e69d6
+=== NCCL/CUDA Intercept Log Started ===
+Rank: 0
+Start Time: 1768117322.902395134
+Log File: ./mega_log/rank_0.log
+=======================================
+1768117322.901607826,NCCL_API,AllGather,count=1,datatype=4,stream=8a8a780,comm=8feef10,group_hash=0xe57bfa5f1a25a109
+1768117322.905866129,NCCL_API,Broadcast,count=6,datatype=4,stream=8a8a780,comm=8feef10,group_hash=0xe57bfa5f1a25a109
+=== NCCL/CUDA Intercept Log Started ===
+Rank: 0
+Start Time: 1768117578.463019494
+Log File: ./mega_log/rank_0.log
+=======================================
+1768117578.462610474,NCCL_API,AllGather,count=1,datatype=4,stream=8ce7be0,comm=8cf2ea0,group_hash=0x2e9c51c095989ca2
+1768117578.466339338,NCCL_API,Broadcast,count=6,datatype=4,stream=8ce7be0,comm=8cf2ea0,group_hash=0x2e9c51c095989ca2
+=== NCCL/CUDA Intercept Log Started ===
+Rank: 0
+Start Time: 1768117713.349477155
+Log File: ./mega_log/rank_0.log
+=======================================
+1768117713.348983304,NCCL_API,AllGather,count=1,datatype=4,stream=9376d40,comm=98dbd90,group_hash=0xdeb43d14cc4a5ef9
+1768117713.353749314,NCCL_API,Broadcast,count=6,datatype=4,stream=9376d40,comm=98dbd90,group_hash=0xdeb43d14cc4a5ef9
+1768117713.357580746,CUDA_KERNEL,func=7f09c6363670,grid=(1,2,1),block=(128,1,1),stream=0,is_nccl=0
+1768117713.409629395,NCCL_API,Broadcast,count=22,datatype=7,stream=9376d40,comm=98dbd90,group_hash=0xdeb43d14cc4a5ef9
+1768117714.261551309,CUDA_KERNEL,func=7f09c4cd46a0,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768117714.274482237,CUDA_KERNEL,func=7f09c518a320,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768117714.275078234,CUDA_KERNEL,func=7f09c518ad20,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768117714.281599302,CUDA_KERNEL,func=7f09c50a2de0,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768117714.282144378,CUDA_KERNEL,func=7f09c518a320,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768117714.291128373,CUDA_KERNEL,func=7f09c4e964e0,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768117714.295384920,CUDA_KERNEL,func=7f09c5e45c10,grid=(1,1,1),block=(256,1,1),stream=0,is_nccl=0
+1768117714.296161551,CUDA_KERNEL,func=7f09c5e49530,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768117714.296785576,CUDA_KERNEL,func=7f09c5e49160,grid=(1,1,1),block=(384,1,1),stream=0,is_nccl=0
+1768117714.309177162,CUDA_KERNEL,func=7f09c58d4760,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768117714.309805310,CUDA_KERNEL,func=7f09c4cd46a0,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768117714.318874659,CUDA_KERNEL,func=7f09c525c3b0,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768117714.326668879,CUDA_KERNEL,func=7f09c61217d0,grid=(1,1,1),block=(4,1,1),stream=0,is_nccl=0
+1768117714.334596994,CUDA_KERNEL,func=7f09c6109300,grid=(1,1,1),block=(4,1,1),stream=0,is_nccl=0
+1768117714.342766277,CUDA_KERNEL,func=7f09c67ed530,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768117714.343446975,CUDA_KERNEL,func=7f09c518ad20,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768117714.350927595,CUDA_KERNEL,func=7f09c4f1b2d0,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768117714.356861532,CUDA_KERNEL,func=7f09c51de210,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768117714.357436619,CUDA_KERNEL,func=7f09c51de210,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768117714.357933573,CUDA_KERNEL,func=7f09c51de210,grid=(1,1,1),block=(128,1,1),stream=0,is_nccl=0
+1768117714.359251000,NCCL_API,AllReduce,count=1,datatype=7,stream=0,comm=98dbd90,group_hash=0xdeb43d14cc4a5ef9
+1768117714.359396277,NCCL_API,AllReduce,count=1,datatype=7,stream=0,comm=98dbd90,group_hash=0xdeb43d14cc4a5ef9
+1768117714.360457284,NCCL_API,AllReduce,count=1,datatype=7,stream=0,comm=98dbd90,group_hash=0xdeb43d14cc4a5ef9
+=== NCCL/CUDA Intercept Log Ended ===
+End Time: 1768117720.395763209
+=====================================

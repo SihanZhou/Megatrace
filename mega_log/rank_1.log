@@ -1,0 +1,72 @@
+=== NCCL/CUDA Intercept Log Started ===
+Rank: 1
+Start Time: 1768116061.232848567
+Log File: ./mega_log/rank_1.log
+=======================================
+1768116061.230291819,NCCL_API,AllGather,count=1,datatype=4,stream=8dedf70,comm=8e0a9d0,group_hash=0xdea94835044d01f1
+1768116061.234713883,NCCL_API,Broadcast,count=6,datatype=4,stream=8dedf70,comm=8e0a9d0,group_hash=0xdea94835044d01f1
+1768116061.240748857,CUDA_KERNEL,func=7f77ba163670,grid=(1,2,1),block=(128,1,1),stream=0,is_nccl=0
+1768116065.837022249,NCCL_API,Broadcast,count=22,datatype=7,stream=8dedf70,comm=8e0a9d0,group_hash=0xdea94835044d01f1
+1768116066.614537197,NCCL_API,AllReduce,count=1,datatype=7,stream=0,comm=8e0a9d0,group_hash=0xdea94835044d01f1
+1768116066.890519589,NCCL_API,AllReduce,count=1,datatype=7,stream=0,comm=8e0a9d0,group_hash=0xdea94835044d01f1
+1768116066.891354509,NCCL_API,AllReduce,count=1,datatype=7,stream=0,comm=8e0a9d0,group_hash=0xdea94835044d01f1
+=== NCCL/CUDA Intercept Log Ended ===
+End Time: 1768116072.843769390
+=====================================
+=== NCCL/CUDA Intercept Log Started ===
+Rank: 1
+Start Time: 1768116438.660049136
+Log File: ./mega_log/rank_1.log
+=======================================
+1768116438.658375555,NCCL_API,AllGather,count=1,datatype=4,stream=9bad1a0,comm=9bc9c10,group_hash=0x6dd5df7ac533a11
+1768116438.662857638,NCCL_API,Broadcast,count=6,datatype=4,stream=9bad1a0,comm=9bc9c10,group_hash=0x6dd5df7ac533a11
+=== NCCL/CUDA Intercept Log Started ===
+Rank: 1
+Start Time: 1768116756.188496366
+Log File: ./mega_log/rank_1.log
+=======================================
+1768116756.187353487,NCCL_API,AllGather,count=1,datatype=4,stream=8b3a000,comm=8b56a70,group_hash=0x7ad1e65ff7a16352
+1768116756.191333176,NCCL_API,Broadcast,count=6,datatype=4,stream=8b3a000,comm=8b56a70,group_hash=0x7ad1e65ff7a16352
+=== NCCL/CUDA Intercept Log Started ===
+Rank: 1
+Start Time: 1768116925.821062836
+Log File: ./mega_log/rank_1.log
+=======================================
+1768116925.820080023,NCCL_API,AllGather,count=1,datatype=4,stream=8d05070,comm=8d21ae0,group_hash=0x8b0a8df087cad03a
+1768116925.824839610,NCCL_API,Broadcast,count=6,datatype=4,stream=8d05070,comm=8d21ae0,group_hash=0x8b0a8df087cad03a
+=== NCCL/CUDA Intercept Log Started ===
+Rank: 1
+Start Time: 1768117047.942542501
+Log File: ./mega_log/rank_1.log
+=======================================
+1768117047.942281675,NCCL_API,AllGather,count=1,datatype=4,stream=8e4d2c0,comm=8e69d20,group_hash=0xe8643206e56e69d6
+1768117047.958810269,NCCL_API,Broadcast,count=6,datatype=4,stream=8e4d2c0,comm=8e69d20,group_hash=0xe8643206e56e69d6
+=== NCCL/CUDA Intercept Log Started ===
+Rank: 1
+Start Time: 1768117322.901984896
+Log File: ./mega_log/rank_1.log
+=======================================
+1768117322.901768827,NCCL_API,AllGather,count=1,datatype=4,stream=8a64b20,comm=8a815f0,group_hash=0xe57bfa5f1a25a109
+1768117322.905473331,NCCL_API,Broadcast,count=6,datatype=4,stream=8a64b20,comm=8a815f0,group_hash=0xe57bfa5f1a25a109
+=== NCCL/CUDA Intercept Log Started ===
+Rank: 1
+Start Time: 1768117578.463681591
+Log File: ./mega_log/rank_1.log
+=======================================
+1768117578.462829405,NCCL_API,AllGather,count=1,datatype=4,stream=a161fc0,comm=a17ea80,group_hash=0x2e9c51c095989ca2
+1768117578.466969537,NCCL_API,Broadcast,count=6,datatype=4,stream=a161fc0,comm=a17ea80,group_hash=0x2e9c51c095989ca2
+=== NCCL/CUDA Intercept Log Started ===
+Rank: 1
+Start Time: 1768117713.349883161
+Log File: ./mega_log/rank_1.log
+=======================================
+1768117713.349120661,NCCL_API,AllGather,count=1,datatype=4,stream=92ea060,comm=9306ab0,group_hash=0xdeb43d14cc4a5ef9
+1768117713.353871162,NCCL_API,Broadcast,count=6,datatype=4,stream=92ea060,comm=9306ab0,group_hash=0xdeb43d14cc4a5ef9
+1768117713.361022505,CUDA_KERNEL,func=7fca4c048670,grid=(1,2,1),block=(128,1,1),stream=0,is_nccl=0
+1768117713.435422759,NCCL_API,Broadcast,count=22,datatype=7,stream=92ea060,comm=9306ab0,group_hash=0xdeb43d14cc4a5ef9
+1768117714.263654981,NCCL_API,AllReduce,count=1,datatype=7,stream=0,comm=9306ab0,group_hash=0xdeb43d14cc4a5ef9
+1768117714.359505708,NCCL_API,AllReduce,count=1,datatype=7,stream=0,comm=9306ab0,group_hash=0xdeb43d14cc4a5ef9
+1768117714.360429563,NCCL_API,AllReduce,count=1,datatype=7,stream=0,comm=9306ab0,group_hash=0xdeb43d14cc4a5ef9
+=== NCCL/CUDA Intercept Log Ended ===
+End Time: 1768117720.221767145
+=====================================
